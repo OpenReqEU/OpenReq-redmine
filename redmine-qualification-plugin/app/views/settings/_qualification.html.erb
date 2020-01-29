@@ -1,0 +1,11 @@
+<div>
+    <h2>Field mappings</h2>
+    <% for field in IssueCustomField.all do %>
+        <div>
+            <span style="display: inline-block; min-width: 200px"><%= field.name %></span>
+            <input value="<%= settings['customFieldsMappingUrl'] ? settings['customFieldsMappingUrl'][field.id.to_s] : "" %>" 
+                name="settings[customFieldsMappingUrl][<%= field.id %>]"
+                placeholder="url">
+        </div>
+    <% end %>
+</div>

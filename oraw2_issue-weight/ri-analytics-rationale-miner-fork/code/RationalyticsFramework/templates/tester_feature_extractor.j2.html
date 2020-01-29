@@ -1,0 +1,58 @@
+{% extends "tester_base.j2.html" %}
+
+{% block str_title %} Feature-Extractor {% endblock %}
+
+{% block head %}
+    {{ super() }}
+{% endblock %}
+
+{#### Server and client-side consts and variables (should be OUTSIDE of block) ####}
+{% set ID_BTN_WORDPOS_TUPLES = "id_btn_wordpos_tuples" %}
+{% set ID_BTN_POSTAGS_STRING = "id_btn_postags_string" %}
+{% set ID_BTN_POSTAGS_PHRASES_STRING = "id_btn_postags_phrases_string" %}
+{% set ID_BTN_POSTAGS_CLAUSES_STRING = "id_btn_postags_clauses_string" %}
+{% set ID_BTN_POSTAG_FREQ = "id_btn_postag_freq" %}
+{% set ID_BTN_SENTENCE_COUNT = "id_btn_sentence_count" %}
+{% set NAME_INPUT_POSTAG = "postag_key" %}
+
+{% block scripts %}
+{{ super() }}
+<script type="text/javascript">
+    var ID_BTN_WORDPOS_TUPLES = "{{ ID_BTN_WORDPOS_TUPLES }}";
+    var ID_BTN_POSTAGS_STRING = "{{ ID_BTN_POSTAGS_STRING }}";
+    var ID_BTN_POSTAGS_PHRASES_STRING = "{{ ID_BTN_POSTAGS_PHRASES_STRING }}";
+    var ID_BTN_POSTAGS_CLAUSES_STRING = "{{ ID_BTN_POSTAGS_CLAUSES_STRING }}";
+    var ID_BTN_POSTAG_FREQ = "{{ ID_BTN_POSTAG_FREQ }}";
+    var ID_BTN_SENTENCE_COUNT = "{{ ID_BTN_SENTENCE_COUNT }}";
+
+    var URI_WORDPOS_TUPLES = "{{ URI_WORDPOS_TUPLES }}";
+    var URI_POSTAGS_STRING = "{{ URI_POSTAGS_STRING }}";
+    var URI_POSTAGS_PHRASES_STRING = "{{ URI_POSTAGS_PHRASES_STRING }}";
+    var URI_POSTAGS_CLAUSES_STRING = "{{ URI_POSTAGS_CLAUSES_STRING }}";
+    var URI_POSTAG_FREQ = "{{ URI_POSTAG_FREQ }}";
+    var URI_SENTENCE_COUNT = "{{ URI_SENTENCE_COUNT }}";
+
+    var NAME_INPUT_POSTAG = "{{ NAME_INPUT_POSTAG }}";
+
+    var RESPONSE_DATA_KEY = "{{ RESPONSE_DATA_KEY }}";
+</script>
+
+<script src="assets/feature_extractor.js"></script>
+
+{% endblock scripts %}
+
+{% block url_service %}{{ URI_MAIN }}{% endblock %}
+
+{% block service_fields %}
+{% endblock %}
+
+{% block service_actions %}
+<button type="button" id="{{ ID_BTN_WORDPOS_TUPLES }}" class="btn btn-default">(Word,POS) Tuple</button>
+<button type="button" id="{{ ID_BTN_POSTAGS_STRING }}" class="btn btn-default">POS-Tags String</button>
+<button type="button" id="{{ ID_BTN_POSTAGS_PHRASES_STRING }}" class="btn btn-default">POS-Tag Phrases String</button>
+<button type="button" id="{{ ID_BTN_POSTAGS_CLAUSES_STRING }}" class="btn btn-default">POS-Tag Clauses String</button>
+<button type="button" id="{{ ID_BTN_SENTENCE_COUNT }}" class="btn btn-default">Sentence Count</button><br />
+|<button type="button" id="{{ ID_BTN_POSTAG_FREQ }}" class="btn btn-default">Count Freq. of POS-Tag:</button>
+<input name="{{ NAME_INPUT_POSTAG }}" value="NN" />
+
+{% endblock %}

@@ -1,0 +1,31 @@
+{% extends "tester_base.j2.html" %}
+
+{% block str_title %} Preprocessor {% endblock %}
+
+{% block head %}
+    {{ super() }}
+{% endblock %}
+
+{#### Server and client-side consts and variables (should be OUTSIDE of block) ####}
+{% set ID_BTN_REMOVESTOPS = "id_btn_removestopwords" %}
+{% set ID_BTN_REMOVEPUNCTS = "id_btn_removepunctuation" %}
+
+{% block scripts %}
+{{ super() }}
+<script type="text/javascript">
+    var ID_BTN_REMOVESTOPS = "{{ ID_BTN_REMOVESTOPS }}";
+    var ID_BTN_REMOVEPUNCTS = "{{ ID_BTN_REMOVEPUNCTS }}";
+    var URI_REMOVESTOPS = "{{ URI_REMOVESTOPS }}";
+    var URI_REMOVEPUNCT = "{{ URI_REMOVEPUNCT }}";
+    var RESPONSE_DATA_KEY = "{{ RESPONSE_DATA_KEY }}";
+</script>
+
+<script src="assets/preprocessor.js"></script>
+{% endblock scripts %}
+
+{% block url_service %}preprocessor{% endblock %}
+{% block service_actions %}
+
+<button type="button" id="{{ ID_BTN_REMOVESTOPS }}" class="btn btn-default">Remove stopwords</button>
+<button type="button" id="{{ ID_BTN_REMOVEPUNCTS }}" class="btn btn-default">Remove punctuation</button>
+{% endblock %}

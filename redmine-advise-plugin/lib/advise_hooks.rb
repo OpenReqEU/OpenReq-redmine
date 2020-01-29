@@ -1,0 +1,86 @@
+require 'uri'
+require 'net/http'
+require 'json'
+
+class AdviseHooks < Redmine::Hook::ViewListener
+    def view_layouts_base_html_head(context)
+        stylesheet_link_tag 'endline.css', :plugin => 'advise'
+    end
+    
+    def controller_issues_new_after_save(context)
+        begin
+            if !Project.find(context[:issue][:project_id]).enabled_module('advise')
+                return nil
+            end
+
+            if Setting.plugin_advise['advise_user_mail']
+                user = User.find_by_mail(Setting.plugin_advise['advise_user_mail'])
+            end
+
+            field_id = Setting.plugin_advise['field_id']
+
+            response = post(
+                Setting.plugin_advise['url'],
+                JSON.generate({
+                    :content => context[:issue][:subject] + " " + context[:issue][:description],
+                    :ticketId => context[:issue][:id],
+                    # post open req the tickets are grouped by theme instead of project
+                    # :project => Project.find(context[:issue][:project_id]).name,
+                    :project => context[:issue].custom_field_values[field_id.to_i],
+                    :treshold => Setting.plugin_advise['treshold'],
+                    :count => Setting.plugin_advise['count']
+                })
+            )
+            
+            if(response["closest"])
+                notes = "-- Redmine Advise --\n"
+                notes << "\nTicket les plus ressemblants:\n"
+                # notes << "id | autheur | commun% | date | titre \n"
+                # notes << toDetails(response["closest"])
+                # notes << "\nTickets les proches du même projet:\n"
+                notes << "id | autheur | commun% | date | titre \n"
+                notes << (response["project_closests"].map {|x| toDetails(x)}).join("")
+                
+                j = Journal.new(
+                    :journalized => Issue.find(context[:issue][:id]),
+                    :user => user,
+                    :notes => notes,
+                    :private_notes => true,
+                    :details => [JournalDetail.new(:property => 'relation', :prop_key => 'relates')])
+                j.save()
+            end
+            
+        rescue Exception => e
+            Rails.logger.error "ADVISE_PLUGIN ERROR: #{e}"
+        end
+    end
+
+    def post(url, body)
+        uri = URI.parse(URI.encode(url))
+        request = Net::HTTP::Post.new(uri, 'Content-Type' => 'application/json')
+        request.body = body
+        
+        response = Net::HTTP.start(uri.host, uri.port, 
+            :use_ssl => uri.scheme == 'https', 
+            :open_timeout => 2, 
+            :read_timeout => 2) do |http|
+
+            http.request(request)
+        end
+        
+        return JSON.parse(response.body)
+    end
+
+    def toDetails(advise)
+        begin
+            ticket = Issue.find(advise["id"])
+            correlation = (100 * (1 - advise["distance"])).round
+            username = User.find(ticket[:author_id]).to_s || 'anonymous'
+        
+            return "#" + advise["id"].to_s + "  | " + username + " | " + correlation.to_s + " | " + ticket[:start_date].to_s + " | " + ticket[:subject].to_s + " \n"
+        rescue
+            Rails.logger.error "ADVISE_PLUGIN WARN: could'nt find issue ##{advise["id"].to_s}"
+            return ""
+        end
+    end
+end

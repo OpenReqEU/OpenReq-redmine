@@ -1,0 +1,73 @@
+---
+swagger: "2.0"
+info:
+  description: "OpenReq Requirement Dependency Recommendation Service"
+  version: "1.0.0"
+  title: "OpenReq Requirement Dependency Recommendation Service"
+  termsOfService: "http://swagger.io/terms/"
+  contact:
+    email: "rsamer@ist.tugraz.at"
+  license:
+    name: "Apache 2.0"
+    url: "http://www.apache.org/licenses/LICENSE-2.0.html"
+host: "217.172.12.199:9007"
+basePath: "/v1"
+tags:
+- name: "recommend"
+  description: "OpenReq Requirement Dependency Recommendation Service"
+schemes:
+- "http"
+paths:
+  /recommend:
+    post:
+      tags:
+      - "Recommender"
+      summary: "Retrieve a list of dependencies between requirements."
+      description: ""
+      operationId: "recommend_requirement_dependencies"
+      consumes:
+      - "application/json"
+      - "application/xml"
+      produces:
+      - "application/json"
+      - "application/xml"
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "Requirement objects"
+        required: true
+        schema:
+          type: "array"
+          items:
+            $ref: "#/definitions/Requirement"
+      responses:
+        200:
+          description: "successful operation"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/Requirement"
+        405:
+          description: "Invalid input"
+      x-swagger-router-controller: "application.controllers.recommendation_controller"
+definitions:
+  Requirement:
+    type: "object"
+    properties:
+      id:
+        type: "integer"
+        format: "int64"
+      title:
+        type: "string"
+      description:
+        type: "string"
+      comments:
+        type: "array"
+        items:
+          type: "string"
+      predictions:
+        type: "array"
+        items:
+          $ref: "#/definitions/Requirement"
+    xml:
+      name: "requirement"

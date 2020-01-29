@@ -1,0 +1,23 @@
+<div>
+    <h2>General</h2>
+    <div>
+        <span style="display: inline-block; min-width: 200px">advise server url:</span>
+        <input value="<%= settings['url'] %>" name="settings[url]">
+    </div>
+    <div>
+        <span style="display: inline-block; min-width: 200px">Advise confidence treshold:</span>
+        <input value="<%= settings['treshold'] %>" name="settings[treshold]" type="number" step="0.01">
+    </div>
+    <div>
+        <span style="display: inline-block; min-width: 200px">Max issue returned:</span>
+        <input value="<%= settings['count'] %>" name="settings[count]" type="number">
+    </div>
+    <div>
+        <span style="display: inline-block; min-width: 200px">Theme custom field id:</span>
+        <input value="<%= settings['field_id'] %>" name="settings[field_id]" type="number">
+    </div>
+    <div>
+        <span style="display: inline-block; min-width: 200px">Email of the user associated with the advises:</span>
+        <input value="<%= settings['advise_user_mail'] %>" name="settings[advise_user_mail]" type="email">
+    </div>
+</div>

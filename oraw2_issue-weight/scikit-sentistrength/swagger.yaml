@@ -1,0 +1,50 @@
+---
+swagger: "2.0"
+info:
+  description: This API returns a json, return a weight to prioritize an issue report wrote in french.
+  version: "1.0.0"
+  title: Get the issue weight
+  contact:
+    email: damien.gilles@alterway.fr
+host: 127.0.0.1:9704
+schemes:
+- http
+paths:
+  /issue_weighting:
+    post:
+      description: Takes an issue report and return it's weight.
+      operationId: issueWeighting
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      parameters:
+       - in: body
+         name: Issue
+         required: true
+         schema:
+          $ref: "#/definitions/Issue"
+      responses:
+        200:
+          description: JSON object.
+          schema:
+            $ref: "#/definitions/Result"
+        400:
+          description: bad input or could not process.
+definitions:
+  Issue:
+    type: object
+    properties:
+      Title:
+        type: string
+        example: pb de droits avec le compte de Hugues
+      Body:
+        type: string
+        example: Le compte de Hugues MARINHO ne dispose pas de tous les droits pour le projet TMA Frédérique Henri.
+      Stance:
+        type: number
+        example: 3.0
+  Result:
+    type: array
+    items:
+      type: string

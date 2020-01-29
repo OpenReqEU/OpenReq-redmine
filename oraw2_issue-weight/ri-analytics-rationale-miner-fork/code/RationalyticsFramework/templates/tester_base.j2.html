@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+    {#### Server and client-side consts and variables ####}
+    {% set NAME_TEXTAREA = "text_value" %}
+    {% set ID_TEXTAREA = "id_textArea" %}
+    {% set ID_TEXT_FORM = "id_textForm" %}
+
+    {% set ID_DIV_RESULT = "id_result" %}
+    {% set ID_BTN_CLEAR = "id_btn_clear" %}
+    {% set ID_DATA_TABLE_R = "id_data_table_r" %}
+    {% set ID_DATA_TABLE_S = "id_data_table_s" %}
+
+    {% set URI_SERVICE_DATA_HANDLER = "data-handler" %}
+
+    {#### Header ####}
+    {% block head %}
+        <title>{% block str_title %}{% endblock %} - Tester</title>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css"
+              media="screen">
+        <link rel="stylesheet"
+              href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.10.1/bootstrap-table.min.css">
+        <script src="http://code.jquery.com/jquery-3.2.1.min.js"></script>
+        <script src="http://netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.10.1/bootstrap-table.min.js"></script>
+
+        <style type="text/css">
+            .container {
+                max-width: 1000px;
+                padding-top: 50px;
+            }
+
+            #id_div_data_container .tab-pane {
+                height: 400px;
+                overflow-y: scroll;
+                width: 100%;
+            }
+
+        </style>
+    {% endblock head %}
+
+    <script type="text/javascript">
+        var NAME_TEXTAREA = "{{ NAME_TEXTAREA }}";
+        var ID_TEXTAREA = "{{ ID_TEXTAREA }}";
+        var ID_TEXT_FORM = "{{ ID_TEXT_FORM }}";
+        var ID_DIV_RESULT = "{{ ID_DIV_RESULT }}";
+        var ID_BTN_CLEAR = "{{ ID_BTN_CLEAR }}";
+
+        var ID_DATA_TABLE_R = "{{ ID_DATA_TABLE_R }}";
+        var ID_DATA_TABLE_S = "{{ ID_DATA_TABLE_S }}";
+        var URI_SERVICE_DATA_HANDLER = "{{ URI_SERVICE_DATA_HANDLER }}";
+    </script>
+
+    {#### Custom javascript files ####}
+    {% block scripts %}
+        <script src="assets/base.js"></script>
+    {% endblock scripts %}
+
+</head>
+
+<body>
+
+<div id="id_div_data_container" class="container">
+    <ul class="nav nav-tabs">
+        <li class="active"><a data-toggle="tab" href="#id_div_asr_review">ASR reviews</a></li>
+        <li><a data-toggle="tab" href="#id_div_asr_sentence">ASR sentences</a></li>
+    </ul>
+
+    <div class="tab-content">
+        <div id="id_div_asr_review" class="tab-pane fade in active">
+            <table id="{{ ID_DATA_TABLE_R }}"
+                   data-toggle="table"
+                   data-height="400"
+                   data-ajax="requestTableData_R"
+                   data-search="true"
+                   data-side-pagination="server"
+                   data-pagination="true">
+                <thead>
+                <tr>
+                    <th data-field="ApplicationName">Application Name</th>
+                    <th data-field="CustomReviewId">ReviewID</th>
+                    <th data-field="ValueType">Type</th>
+                    <th data-field="Value">Value</th>
+                </tr>
+                </thead>
+            </table>
+        </div>
+        <div id="id_div_asr_sentence" class="tab-pane fade">
+            <table id="{{ ID_DATA_TABLE_S }}"
+               data-toggle="table"
+               data-height="400"
+               data-ajax="requestTableData_S"
+               data-search="true"
+               data-side-pagination="server"
+               data-pagination="true">
+            <thead>
+            <tr>
+                <th data-field="ApplicationName">Application Name</th>
+                <th data-field="CustomReviewId">ReviewID</th>
+                <th data-field="RelativeOrder">Relative Order</th>
+                <th data-field="ValueType">Type</th>
+                <th data-field="Value">Value</th>
+            </tr>
+            </thead>
+            </table>
+        </div>
+    </div>
+</div>
+
+{#<hr/>#}
+
+<div class="container">
+    <form id="{{ ID_TEXT_FORM }}" action="{% block url_service %}{% endblock url_service %}" method="POST" role="form"
+          class="form-horizontal">
+        <label for="{{ ID_TEXTAREA }}">Text</label>
+        <textarea class="form-control" id="{{ ID_TEXTAREA }}" name="{{ NAME_TEXTAREA }}" rows="5"></textarea>
+        <br/>
+
+        <hr/>
+
+        <div id="id_service_fields">
+            {% block service_fields %}{% endblock %}
+        </div>
+
+        <div id="id_service_actions">
+            {% block service_actions %}{% endblock %}
+        </div>
+
+        <hr/>
+
+        <div id="id_default_actions" class="center-block">
+            {% block default_actions %}
+                <button type="button" id="{{ ID_BTN_CLEAR }}" class="btn btn-default">Clear</button>
+            {% endblock default_actions %}
+        </div>
+
+    </form>
+    <hr/>
+
+    {% block results %}
+        <div id="{{ ID_DIV_RESULT }}"></div>
+    {% endblock results %}
+
+</div>
+
+</body>
+</html>

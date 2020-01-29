@@ -1,0 +1,56 @@
+version: "3"
+
+services:
+  redmine:
+#    image: redmine
+    image: alterwayrnd/oraw-redmine:2
+    volumes:
+      - ./redmine-qualification-plugin:/usr/src/redmine/plugins/qualification 
+      - ./redmine-ponderation-plugin:/usr/src/redmine/plugins/ponderation
+      - ./redmine-advise-plugin:/usr/src/redmine/plugins/advise
+    ports:
+      - "3000:3000"
+    networks:
+      - over
+  
+  ri:
+#    build: ./oraw2_issue-weight/ri-analytics-rationale-miner-fork
+    image: alterwayrnd/oraw-ri-warm:1
+    networks:
+      - over
+  
+  ss:
+    build: ./oraw2_issue-weight/scikit-sentistrength
+    networks:
+      - over
+  
+  oraw3:
+    build: oraw3_missing-features
+    environment:
+      - BACKEND_SS=http://ss:8080/issue_weighting
+      - BACKEND_RI=http://ri:9704/issue_weighting
+    networks:
+      - over
+
+  oraw4_aw:
+    build: oraw4_domain-type/aw-kmeans
+    networks: 
+      - over
+
+  oraw4_or:
+    build: oraw4_domain-type/analytics-backend
+    networks: 
+      - over
+
+  oraw4:
+    build: oraw4_redmine-adapter
+    networks:
+      - over
+
+  oraw5:
+    build: oraw5_issue-comparison/aw-closest-text
+    networks:
+      - over
+
+networks:
+  over:

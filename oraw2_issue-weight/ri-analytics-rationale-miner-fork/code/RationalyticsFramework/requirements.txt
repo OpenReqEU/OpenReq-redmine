@@ -1,0 +1,12 @@
+nltk
+sklearn
+Jinja2>=2.9.6
+spacy
+pandas
+dependency-injector
+Flask-MongoSet
+pymongo
+mongoengine
+joblib
+flask_restful_swagger_2
+flask

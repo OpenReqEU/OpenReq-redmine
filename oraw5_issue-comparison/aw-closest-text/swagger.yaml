@@ -1,0 +1,40 @@
+swagger: "2.0"
+info:
+  description: "recommend related issues to checkout by calculating the jaccard distance beetween issues"
+  version: "1.0.0"
+  title: "aw-closest-text"
+host: "localhost:8000"
+paths:
+  /getClosestTicket:
+    post:
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "the text content of the issue"
+        required: true
+        schema:
+          type: object
+          required:
+            - content
+            - ticketId
+            - treshold
+            - count
+            - project
+          properties:
+            content:
+              type: string
+            ticketId:
+              type: number
+            treshold:
+              type: number
+            count:
+              type: number
+            project:
+              type: number
+      responses:
+        200:
+          description: "Ok"
