@@ -1,7 +1,7 @@
 {
   "dependencies": {
     "hapi": "^18.1.0",
-    "papaparse": "^5.0.0",
+    "papaparse": "^5.2.0",
     "readline-async-generator": "^1.0.0",
     "stopword": "^0.1.13"
   }
