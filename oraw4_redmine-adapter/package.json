@@ -1,6 +1,6 @@
 {
   "dependencies": {
-    "node-fetch": "^2.6.0",
+    "node-fetch": "^2.6.1",
     "@hapi/hapi": "^18.3.1"
   }
 }
