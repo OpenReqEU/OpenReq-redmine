@@ -6,5 +6,5 @@ dependency-injector===3.14.4
 joblib===0.13.2
 flask_restful_swagger_2===0.35
 flask===1.0.2
-numpy===1.16.2
+numpy===1.22.0
 flask_cors===3.0.7
