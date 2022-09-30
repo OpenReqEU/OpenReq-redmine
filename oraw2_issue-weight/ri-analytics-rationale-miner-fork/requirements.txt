@@ -3,7 +3,7 @@ scikit-learn===0.20.2
 spacy===2.0.18
 pandas===0.24.1
 dependency-injector===3.14.4
-joblib===0.13.2
+joblib===1.2.0
 flask_restful_swagger_2===0.35
 flask===1.0.2
 numpy===1.16.2
